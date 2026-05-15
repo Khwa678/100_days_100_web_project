@@ -18,10 +18,10 @@ precision mediump float;
 varying vec2 vUv;
 
 uniform float iTime;
-uniform vec3  iResolution;
+uniform vec3 iResolution;
 uniform float uScale;
 
-uniform vec2  uGridMul;
+uniform vec2 uGridMul;
 uniform float uDigitSize;
 uniform float uScanlineIntensity;
 uniform float uGlitchAmount;
@@ -30,8 +30,8 @@ uniform float uNoiseAmp;
 uniform float uChromaticAberration;
 uniform float uDither;
 uniform float uCurvature;
-uniform vec3  uTint;
-uniform vec2  uMouse;
+uniform vec3 uTint;
+uniform vec2 uMouse;
 uniform float uMouseStrength;
 uniform float uUseMouse;
 uniform float uPageLoadProgress;
@@ -206,41 +206,44 @@ void main() {
 `;
 
 function hexToRgb(hex) {
-  let value = hex.replace('#', '').trim();
-  if (value.length === 3) {
-    value = value
+  let h = hex.replace('#', '').trim();
+  if (h.length === 3) {
+    h = h
       .split('')
-      .map(character => character + character)
+      .map(c => c + c)
       .join('');
   }
 
-  const num = Number.parseInt(value, 16);
+  const num = parseInt(h, 16);
   return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255];
 }
 
 function FaultyTerminal({
-  scale = 1.55,
-  gridMul = [2.2, 1],
-  digitSize = 1.15,
-  timeScale = 0.35,
+  scale = 1,
+  gridMul = [2, 1],
+  digitSize = 1.5,
+  timeScale = 0.3,
   pause = false,
-  scanlineIntensity = 0.9,
-  glitchAmount = 0.55,
-  flickerAmount = 0.6,
-  noiseAmp = 0.9,
+  scanlineIntensity = 0.3,
+  glitchAmount = 1,
+  flickerAmount = 1,
+  noiseAmp = 0,
   chromaticAberration = 0,
-  dither = 0.02,
-  curvature = 0,
-  tint = '#52f5d4',
+  dither = 0,
+  curvature = 0.2,
+  tint = '#a7ef9e',
   mouseReact = true,
-  mouseStrength = 0.35,
-  pageLoadAnimation = false,
-  brightness = 0.88,
-  className = '',
-  style = {}
+  mouseStrength = 0.2,
+  dpr = Math.min(window.devicePixelRatio || 1, 2),
+  pageLoadAnimation = true,
+  brightness = 1,
+  className,
+  style,
+  ...rest
 }) {
   const containerRef = useRef(null);
   const programRef = useRef(null);
+  const rendererRef = useRef(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });
   const frozenTimeRef = useRef(0);
@@ -265,20 +268,22 @@ function FaultyTerminal({
     const container = containerRef.current;
     if (!container) return undefined;
 
-    const renderer = new Renderer({ dpr: Math.min(window.devicePixelRatio || 1, 2), alpha: true, premultipliedAlpha: false });
+    const renderer = new Renderer({ dpr });
+    rendererRef.current = renderer;
     const gl = renderer.gl;
-    gl.clearColor(0, 0, 0, 0);
+    gl.clearColor(0, 0, 0, 1);
 
     const geometry = new Geometry(gl, {
       position: { size: 2, data: new Float32Array([-1, -1, 3, -1, -1, 3]) },
       uv: { size: 2, data: new Float32Array([0, 0, 2, 0, 0, 2]) }
     });
+
     const program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
       uniforms: {
         iTime: { value: 0 },
-        iResolution: { value: new Color(1, 1, 1) },
+        iResolution: { value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height) },
         uScale: { value: scale },
         uGridMul: { value: new Float32Array(gridMul) },
         uDigitSize: { value: digitSize },
@@ -308,7 +313,7 @@ function FaultyTerminal({
     gl.canvas.style.display = 'block';
 
     const resize = () => {
-      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
       program.uniforms.iResolution.value = new Color(
         gl.canvas.width,
         gl.canvas.height,
@@ -316,12 +321,12 @@ function FaultyTerminal({
       );
     };
 
-    const resizeObserver = new ResizeObserver(resize);
+    const resizeObserver = new ResizeObserver(() => resize());
     resizeObserver.observe(container);
     resize();
 
     const update = now => {
-      rafRef.current = window.requestAnimationFrame(update);
+      rafRef.current = requestAnimationFrame(update);
 
       if (pageLoadAnimation && loadAnimationStartRef.current === 0) {
         loadAnimationStartRef.current = now;
@@ -343,11 +348,11 @@ function FaultyTerminal({
       }
 
       if (mouseReact) {
-        const damping = 0.08;
+        const dampingFactor = 0.08;
         const smoothMouse = smoothMouseRef.current;
         const mouse = mouseRef.current;
-        smoothMouse.x += (mouse.x - smoothMouse.x) * damping;
-        smoothMouse.y += (mouse.y - smoothMouse.y) * damping;
+        smoothMouse.x += (mouse.x - smoothMouse.x) * dampingFactor;
+        smoothMouse.y += (mouse.y - smoothMouse.y) * dampingFactor;
 
         const mouseUniform = program.uniforms.uMouse.value;
         mouseUniform[0] = smoothMouse.x;
@@ -357,50 +362,46 @@ function FaultyTerminal({
       renderer.render({ scene: mesh });
     };
 
-    rafRef.current = window.requestAnimationFrame(update);
+    rafRef.current = requestAnimationFrame(update);
 
-    if (mouseReact) {
-      container.addEventListener('mousemove', handleMouseMove);
-    }
+    if (mouseReact) container.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      window.cancelAnimationFrame(rafRef.current);
+      cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
-      if (mouseReact) {
-        container.removeEventListener('mousemove', handleMouseMove);
-      }
-      if (gl.canvas.parentElement === container) {
-        container.removeChild(gl.canvas);
-      }
+      if (mouseReact) container.removeEventListener('mousemove', handleMouseMove);
+      if (gl.canvas.parentElement === container) container.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       loadAnimationStartRef.current = 0;
       timeOffsetRef.current = Math.random() * 100;
     };
   }, [
-    brightness,
-    curvature,
-    ditherValue,
-    digitSize,
-    flickerAmount,
-    glitchAmount,
+    dpr,
+    pause,
+    timeScale,
+    scale,
     gridMul,
-    handleMouseMove,
+    digitSize,
+    scanlineIntensity,
+    glitchAmount,
+    flickerAmount,
+    noiseAmp,
+    chromaticAberration,
+    ditherValue,
+    curvature,
+    tintVec,
     mouseReact,
     mouseStrength,
-    noiseAmp,
     pageLoadAnimation,
-    pause,
-    scale,
-    scanlineIntensity,
-    tintVec,
-    timeScale,
-    chromaticAberration
+    brightness,
+    handleMouseMove
   ]);
 
   return React.createElement('div', {
     ref: containerRef,
-    className: `faulty-terminal-container ${className}`.trim(),
-    style
+    className: `faulty-terminal-container ${className || ''}`.trim(),
+    style,
+    ...rest
   });
 }
 
@@ -410,23 +411,23 @@ if (host) {
   const root = createRoot(host);
   root.render(
     React.createElement(FaultyTerminal, {
-      scale: 1.55,
-      gridMul: [2.2, 1],
-      digitSize: 1.15,
-      timeScale: 0.35,
+      scale: 1.5,
+      gridMul: [2, 1],
+      digitSize: 1.2,
+      timeScale: 0.5,
       pause: false,
-      scanlineIntensity: 0.9,
-      glitchAmount: 0.55,
-      flickerAmount: 0.6,
-      noiseAmp: 0.9,
+      scanlineIntensity: 0.5,
+      glitchAmount: 1,
+      flickerAmount: 1,
+      noiseAmp: 1,
       chromaticAberration: 0,
-      dither: 0.02,
-      curvature: 0,
-      tint: '#52f5d4',
+      dither: 0,
+      curvature: 0.1,
+      tint: '#A7EF9E',
       mouseReact: true,
-      mouseStrength: 0.35,
-      pageLoadAnimation: false,
-      brightness: 0.88,
+      mouseStrength: 0.5,
+      pageLoadAnimation: true,
+      brightness: 0.6,
       style: { width: '100%', height: '100%' }
     })
   );
