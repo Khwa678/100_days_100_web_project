@@ -315,6 +315,7 @@ function fillTable(searchTerm = "") {
         ["Day 115", "Event Registration System", "https://event-registration-system-w10a.onrender.com/"],
         ["Day 116", "AI Image Classifier", "./public/AI Image CLassifier/index.html"],
         ["Day 117", "ZEN TIMER", "./public/ZEN_TIMER/index.html"],
+      [ "Day 118" , "Random-Joke-Generator" , "./public/RandomJokeGenerator/index.html" ],
     ];
 
     filteredProjectData = [...projectData];
