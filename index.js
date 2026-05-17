@@ -921,7 +921,7 @@ function renderGrid() {
   filtered.forEach(([day, name, url, tags, cat]) => {
     const card = document.createElement('div');
     card.className = 'project-card';
-
+    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray =
       typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
     const tagsHTML = tagsArray
@@ -946,10 +946,12 @@ function renderGrid() {
                 View Demo <i class="fas fa-arrow-right"></i>
             </a>
 
-            <button class="bookmark-btn"
+            <button class="bookmark-btn ${isBookmarked ? 'active' : ''}"
                     data-id="${day}">
-                <i class="fa-regular fa-bookmark"></i>
-            </button>
+
+                <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+
+            </button>  
 
         </div>
         `;
@@ -979,6 +981,7 @@ function toggleBookmark(project) {
   );
 
   renderBookmarks();
+  renderGrid();
 }
 
 function trackRecentProject(project) {
@@ -1037,15 +1040,23 @@ function renderBookmarks() {
                 ${tagsHTML}
             </div>
 
-            <div class="card-footer">
-                <a href="${url}"
-                   target="_blank"
-                   class="card-link">
+           <div class="card-footer">
 
-                    View Demo
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
+    <a href="${url}"
+       target="_blank"
+       class="card-link">
+
+        View Demo
+        <i class="fas fa-arrow-right"></i>
+    </a>
+
+    <button class="bookmark-btn active"
+            data-id="${day}">
+
+        <i class="fa-solid fa-bookmark"></i>
+    </button>
+
+</div>
         `;
 
     bookmarkGrid.appendChild(card);
@@ -1102,6 +1113,11 @@ function renderRecentProjects() {
                     View Demo
                     <i class="fas fa-arrow-right"></i>
                 </a>
+                  <button class="bookmark-btn active"
+            data-id="${day}">
+
+        <i class="fa-solid fa-bookmark"></i>
+    </button>
             </div>
         `;
 
