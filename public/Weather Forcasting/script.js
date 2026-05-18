@@ -1,39 +1,36 @@
-
-const options = {
-    method: 'GET',
-    headers: {
-        'X-RapidAPI-Key': '2c06e2f780msh3f81c0245629ba6p19a960jsn5eff9cb95a57',
-        'X-RapidAPI-Host': 'weather-by-api-ninjas.p.rapidapi.com'
-    }
-};
+const apiKey = "YOUR_REAL_API_KEY";
 const getWeather = (city) => {
     cityName.innerHTML = city
     loading.style.display = "block";
-    fetch('https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=' + city, options)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
         .then((response) => {
             console.log(response)
-            loading.style.display = "none";
-            // cloud_pct.innerHTML = response.cloud_pct
-            temp.innerHTML = response.temp
-            temp2.innerHTML = response.temp
-            feels_like.innerHTML = response.feels_like
-            humidity.innerHTML = response.humidity
-            humidity2.innerHTML = response.humidity
-            min_temp.innerHTML = response.min_temp
-            max_temp.innerHTML = response.max_temp
-            wind_speed.innerHTML = response.wind_speed
-            wind_speed2.innerHTML = response.wind_speed
-            wind_degrees.innerHTML = response.wind_degrees
-            sunrise.innerHTML = response.sunrise
-            sunset.innerHTML = response.sunset
-            
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 800);
+            // cloud_pct.innerHTML = response.main.maincloud_pct
+            temp.innerHTML = response.main.temp
+            temp2.innerHTML = response.main.temp
+            feels_like.innerHTML = response.main.feels_like
+            humidity.innerHTML = response.main.humidity
+            humidity2.innerHTML = response.main.humidity
+            min_temp.innerHTML = response.main.temp_min
+            max_temp.innerHTML = response.main.temp_max
+            wind_speed.innerHTML = response.wind.speed
+            wind_speed2.innerHTML = response.wind.speed
+            wind_degrees.innerHTML = response.wind.deg
+            sunrise.innerHTML = new Date(response.sys.sunrise * 1000).toLocaleTimeString();
+            sunset.innerHTML = new Date(response.sys.sunset * 1000).toLocaleTimeString();
+
 
         })
-          .catch(err => {
+        .catch(err => {
 
-            // HIDE spinner if error occurs
-            loading.style.display = "none";
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 800);
+
 
             console.error(err);
         });
