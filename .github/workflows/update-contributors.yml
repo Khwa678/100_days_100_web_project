@@ -202,6 +202,7 @@ jobs:
           git add README.md
           git commit -m "docs(readme): reorder contributors by latest commit [skip ci]"
 
+          push_status=1
           for attempt in 1 2 3; do
             if push_output="$(git push origin "HEAD:${TARGET_BRANCH}" 2>&1)"; then
               exit 0
@@ -213,12 +214,8 @@ jobs:
               echo "Push attempt ${attempt} failed; rebasing on origin/${TARGET_BRANCH} and retrying..."
               if ! git pull --rebase origin "${TARGET_BRANCH}"; then
                 echo "Rebase failed while preparing retry; aborting."
-                if [ -d .git/rebase-apply ] || [ -d .git/rebase-merge ]; then
-                  if ! git rebase --abort; then
-                    echo "Failed to abort active rebase."
-                  fi
-                else
-                  echo "No rebase in progress to abort."
+                if ! git rebase --abort; then
+                  echo "Rebase abort command failed."
                 fi
                 exit 1
               fi
