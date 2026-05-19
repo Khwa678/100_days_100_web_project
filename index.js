@@ -622,3 +622,5 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchRepoStats();
   initScrollBtn();
 });
+
+// Force Vercel cache refresh
