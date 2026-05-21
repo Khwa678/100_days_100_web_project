@@ -427,7 +427,7 @@ function renderGrid() {
   grid.style.display = 'grid';
   noResults.style.display = 'none';
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
   if (currentPage > totalPages) {
     currentPage = totalPages;
   }
@@ -893,6 +893,9 @@ function initTechStackSearch() {
   });
 }
 
+/* ============================================================
+   SEARCH CONTROLS
+   ============================================================ */
 const searchInput = document.getElementById('searchInput');
 const clearBtn = document.getElementById('clearSearch');
 
