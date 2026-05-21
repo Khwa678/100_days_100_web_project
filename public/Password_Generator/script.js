@@ -5,6 +5,7 @@ const lengthDisplay   = document.querySelector("[data-lengthNumber]");
 const passwordDisplay = document.querySelector("[data-passwordDisplay]");
 const copyBtn         = document.querySelector("[data-copy]");
 const copyMsg         = document.querySelector("[data-copyMsg]");
+const hideTimerText   = document.getElementById("hideTimer");
 const uppercaseCheck  = document.querySelector("#uppercase");
 const lowercaseCheck  = document.querySelector("#lowercase");
 const numbersCheck    = document.querySelector("#numbers");
@@ -16,9 +17,11 @@ const allCheckBox     = document.querySelectorAll("input[type=checkbox]");
 const symbols         = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
 
 // ── State ──
-let password       = "";
-let passwordLength = 10;
-let checkCount     = 0;
+let password          = "";
+let passwordLength    = 10;
+let checkCount        = 0;
+let hideTimeout;
+let countdownInterval;
 
 // ── Init ──
 handleSlider();
@@ -158,5 +161,34 @@ generateBtn.addEventListener("click", () => {
     password = shufflePassword(Array.from(password));
 
     passwordDisplay.value = password;
+
+    // Auto-hide password after 10 seconds for security
+    clearTimeout(hideTimeout);
+    clearInterval(countdownInterval);
+
+    let timeLeft = 10;
+    if (hideTimerText) {
+        hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
+    }
+
+    countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+            if (hideTimerText) {
+                hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
+            }
+        } else {
+            clearInterval(countdownInterval);
+        }
+    }, 1000);
+
+    hideTimeout = setTimeout(() => {
+        passwordDisplay.value = "********";
+        if (hideTimerText) {
+            hideTimerText.innerText = "Password hidden for security";
+        }
+        clearInterval(countdownInterval);
+    }, 10000);
+
     calcStrength();
 });
