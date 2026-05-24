@@ -23,31 +23,6 @@
         localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
     });
 
-  const themeBtn = document.getElementById("theme-toggle");
-  const STORAGE_KEY = "bmi-theme";
-
-  // Resolve initial theme: saved preference → OS preference → light
-  function getPreferred() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return saved;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
-
-  function applyTheme(theme) {
-    document.body.classList.toggle("dark", theme === "dark");
-  }
-
-  // Apply on first load (runs synchronously before paint)
-  applyTheme(getPreferred());
-
-  // Toggle on click
-  themeBtn.addEventListener("click", () => {
-    const isDark = document.body.classList.toggle("dark");
-    localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
-  });
-
 })();
 
 const heightUnitEl = document.getElementById("height-unit");
