@@ -306,6 +306,25 @@ body::after  { bottom: -120px; right: -120px; animation-delay: 4s; }
     font-weight:bold;
 }
 
+#copyBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.counters {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    color: white;
+    font-weight: bold;
+}
+
+.counter-separator {
+    opacity: 0.7;
+}
+
 #pagesContainer{
     width:100%;
     display:flex;

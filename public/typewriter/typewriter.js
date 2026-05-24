@@ -8,6 +8,9 @@ const pageCounter =
 document.getElementById("pageCounter");
 const downloadPDF =
 document.getElementById("downloadPDF");
+const copyBtn = document.getElementById("copyBtn");
+const wordCountEl = document.getElementById("wordCount");
+const charCountEl = document.getElementById("charCount");
 let audioCtx;
 let currentPage = 0;
 let paperContent = '';
@@ -97,7 +100,7 @@ function addCharToPaper(ch){
         playKeyClick();
 
     if(ch!=="\n")
-    flashKey(ch.toUpperCase());
+        flashKey(ch.toUpperCase());
 
     /* overflow check */
     let page = document.querySelectorAll(".paper-sheet")[currentPage];
@@ -112,6 +115,8 @@ function addCharToPaper(ch){
         getCurrentText().textContent = paperContent;
         }
 
+    updateCopyButtonState();
+    updateCounters();
 }
 
 function deleteCharFromPaper(){
@@ -120,6 +125,8 @@ function deleteCharFromPaper(){
     paperContent = paperContent.slice(0,-1);
     getCurrentText().textContent = paperContent;
     playBackspace();
+    updateCopyButtonState();
+    updateCounters();
 }
 
 
@@ -147,6 +154,8 @@ document.addEventListener("keydown",(e)=>{
         getCurrentText().textContent = paperContent;
         playReturn();
         flashKey("ENTER");
+        updateCopyButtonState();
+        updateCounters();
         return;
     }
 
@@ -170,6 +179,8 @@ document.querySelectorAll(".key").forEach(key=>{
         paperContent+="\n";
         getCurrentText().textContent=paperContent;
         playReturn();
+        updateCopyButtonState();
+        updateCounters();
     return;
     }
     addCharToPaper(ch);
@@ -244,3 +255,55 @@ if(savedTheme==="light"){
     document.body.classList.add("light-theme");
     themeToggle.textContent="☀️";
 }
+
+/* ---------- Word & Character Counters ---------- */
+
+function updateCounters() {
+    const fullText = getAllTextFromAllPages();
+    const charCount = fullText.length;
+    const words = fullText.trim().split(/\s+/).filter(word => word.length > 0);
+    const wordCount = words.length;
+    
+    wordCountEl.textContent = `Words: ${wordCount}`;
+    charCountEl.textContent = `Characters: ${charCount}`;
+}
+
+/* ---------- Copy to Clipboard ---------- */
+
+function getAllTextFromAllPages() {
+    const allPages = document.querySelectorAll(".typewriterText");
+    let fullText = "";
+    allPages.forEach((pageText, index) => {
+        if (index > 0) {
+            fullText += "\n";
+        }
+        fullText += pageText.textContent;
+    });
+    return fullText;
+}
+
+function updateCopyButtonState() {
+    const fullText = getAllTextFromAllPages();
+    copyBtn.disabled = fullText.trim() === "";
+}
+
+copyBtn.onclick = async () => {
+    try {
+        const fullText = getAllTextFromAllPages();
+        await navigator.clipboard.writeText(fullText);
+        
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = "✅ Copied!";
+        copyBtn.disabled = true;
+        
+        setTimeout(() => {
+            copyBtn.textContent = originalText;
+            updateCopyButtonState();
+        }, 2000);
+    } catch (err) {
+        console.error("Copy failed:", err);
+    }
+};
+
+updateCopyButtonState();
+updateCounters();
