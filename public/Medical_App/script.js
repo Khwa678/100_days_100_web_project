@@ -104,70 +104,45 @@ document.addEventListener('DOMContentLoaded', () => {
         const consultationId = document.getElementById('consultationId').value;
         const suggestion = document.getElementById('suggestion').value;
 
-    list.forEach((specialist) => {
+        // Simulating response submission
+        loading.style.display = 'block';
+        statusMessage.textContent = '';
 
-        const option = document.createElement("option");
-
+        setTimeout(() => {
+            loading.style.display = 'none';
+            const consultation = consultationHistory.find(c => c.date === consultationId);
+            if (consultation) {
+                consultation.status = 'Completed';
+                consultation.notes = suggestion;
+                localStorage.setItem('consultations', JSON.stringify(consultationHistory));
+                renderHistory();
+                statusMessage.textContent = `Response submitted for Consultation ID: ${consultationId}`;
+            } else {
+                statusMessage.textContent = `Consultation ID: ${consultationId} not found.`;
+            }
+            responseForm.reset();
+        }, 2000);
+    });
+    
     feedbackForm.addEventListener('submit', function (event) {
         event.preventDefault();
         const feedbackMessage = document.getElementById('feedbackMessage').value;
 
-        specialistSelect.appendChild(option);
+        loading.style.display = 'block';
+        statusMessage.textContent = '';
+
+        setTimeout(() => {
+            loading.style.display = 'none';
+            statusMessage.textContent = `Feedback submitted: ${feedbackMessage}`;
+            feedbackForm.reset();
+        }, 2000);
     });
-}
 
-loadSpecialists(specialists);
-
-
-// Live search filter
-specialistSearch.addEventListener("input", () => {
-
-    const searchValue =
-        specialistSearch.value.toLowerCase();
-
-    const filtered = specialists.filter((specialist) =>
-        specialist.toLowerCase().includes(searchValue)
-    );
-
-    loadSpecialists(filtered);
-});
-
-
-// Consultation form submission
-requestForm.addEventListener("submit", (e) => {
-
-    e.preventDefault();
-
-    const doctorName =
-        document.getElementById("doctorName").value;
-
-    const patientCondition =
-        document.getElementById("patientCondition").value;
-
-    const specialist =
-        specialistSelect.value;
-
-    if (!specialist) {
-        alert("Please select a specialist.");
-        return;
-    }
-
-    // Create history item
-    const listItem = document.createElement("li");
-
-    listItem.innerHTML = `
-        <strong>${doctorName}</strong> requested
-        <strong>${specialist}</strong> consultation
-        for "${patientCondition}"
-    `;
-
-    historyList.prepend(listItem);
-
-    // Success message
-    alert("✅ Consultation submitted successfully!");
-
-    // Reset form
-    requestForm.reset();
+    // Live search filter inside DOMContentLoaded
+    specialistSearch.addEventListener("input", () => {
+        const searchValue = specialistSearch.value;
+        updateSpecialistOptions(searchValue);
+    });
 });
 
 
@@ -211,31 +186,27 @@ const recommendations = {
     `
 };
 
+const symptomSelect = document.getElementById("symptomSelect");
+const recommendationBox = document.getElementById("recommendationBox");
 
-// Symptom change
-symptomSelect.addEventListener("change", () => {
-
-    const selected =
-        symptomSelect.value;
-
-    recommendationBox.innerHTML =
-        recommendations[selected] || "";
-});
+if (symptomSelect && recommendationBox) {
+    symptomSelect.addEventListener("change", () => {
+        const selected = symptomSelect.value;
+        recommendationBox.innerHTML = recommendations[selected] || "";
+    });
+}
 
 
 // Simulated live heart rate
-const heartRate =
-    document.getElementById("heartRate");
+const heartRate = document.getElementById("heartRate");
 
-setInterval(() => {
+if (heartRate) {
+    setInterval(() => {
+        const randomRate = Math.floor(Math.random() * 15) + 70;
+        heartRate.textContent = `${randomRate} BPM`;
+    }, 3000);
+}
 
-    const randomRate =
-        Math.floor(Math.random() * 15) + 70;
-
-    heartRate.textContent =
-        `${randomRate} BPM`;
-
-}, 3000);
 
 
 // Appointment Booking Modal Functionality
