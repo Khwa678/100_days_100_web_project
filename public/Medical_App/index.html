@@ -13,7 +13,8 @@
     <div class="hero-content">
         <h1>🏥 MedConsult Dashboard</h1>
         <p>Connecting Local Doctors with Specialists</p>
-    </header>
+    </div>
+</header>
     <main>
         <section id="consultation-form">
             <h2 >Request a Consultation</h2>
@@ -40,19 +41,75 @@
     <section class="card">
         <h2>👨‍⚕️ Available Doctors</h2>
         <div class="doctors-grid">
+            <!-- Card 1: Dr. Sarah Jenkins -->
             <div class="doctor-card">
-                <h3>Dr. Sarah Jenkins</h3>
-                <p class="specialty">Cardiologist</p>
+                <div class="card-status-header">
+                    <span class="availability available" aria-label="Status: Available Today">
+                        <span class="status-dot green"></span> Available Today
+                    </span>
+                </div>
+                
+                <div class="doctor-profile">
+                    <div class="doctor-avatar">👩‍⚕️</div>
+                    <div class="doctor-identity">
+                        <h3>Dr. Sarah Jenkins</h3>
+                        <span class="specialty-badge">Cardiologist</span>
+                    </div>
+                </div>
+                
+                <div class="doctor-meta">
+                    <div class="experience">💼 12 Years Experience</div>
+                    <div class="rating" aria-label="Doctor rating 4.9 out of 5">⭐ 4.9 Rating</div>
+                </div>
+                
                 <button class="primary-btn book-btn" data-doctor="Dr. Sarah Jenkins" data-specialty="Cardiologist">Book Appointment</button>
             </div>
+
+            <!-- Card 2: Dr. James Smith -->
             <div class="doctor-card">
-                <h3>Dr. James Smith</h3>
-                <p class="specialty">Neurologist</p>
+                <div class="card-status-header">
+                    <span class="availability limited" aria-label="Status: Limited Slots Available">
+                        <span class="status-dot yellow"></span> Limited Slots
+                    </span>
+                </div>
+                
+                <div class="doctor-profile">
+                    <div class="doctor-avatar">👨‍⚕️</div>
+                    <div class="doctor-identity">
+                        <h3>Dr. James Smith</h3>
+                        <span class="specialty-badge">Neurologist</span>
+                    </div>
+                </div>
+                
+                <div class="doctor-meta">
+                    <div class="experience">💼 15 Years Experience</div>
+                    <div class="rating" aria-label="Doctor rating 4.8 out of 5">⭐ 4.8 Rating</div>
+                </div>
+                
                 <button class="primary-btn book-btn" data-doctor="Dr. James Smith" data-specialty="Neurologist">Book Appointment</button>
             </div>
+
+            <!-- Card 3: Dr. Emily Watson -->
             <div class="doctor-card">
-                <h3>Dr. Emily Watson</h3>
-                <p class="specialty">Pediatrician</p>
+                <div class="card-status-header">
+                    <span class="availability available" aria-label="Status: Available Today">
+                        <span class="status-dot green"></span> Available Today
+                    </span>
+                </div>
+                
+                <div class="doctor-profile">
+                    <div class="doctor-avatar">👩‍⚕️</div>
+                    <div class="doctor-identity">
+                        <h3>Dr. Emily Watson</h3>
+                        <span class="specialty-badge">Pediatrician</span>
+                    </div>
+                </div>
+                
+                <div class="doctor-meta">
+                    <div class="experience">💼 8 Years Experience</div>
+                    <div class="rating" aria-label="Doctor rating 5.0 out of 5">⭐ 5.0 Rating</div>
+                </div>
+                
                 <button class="primary-btn book-btn" data-doctor="Dr. Emily Watson" data-specialty="Pediatrician">Book Appointment</button>
             </div>
         </div>
