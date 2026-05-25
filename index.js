@@ -1358,6 +1358,7 @@ window.clearAllTechFilters = clearAllTechFilters;
   const getProfile = () => {
     const smallScreen = window.innerWidth <= 768 || coarsePointerQuery.matches;
     const reducedMotion = reducedMotionQuery.matches;
+    const disableAnimation = smallScreen || reducedMotion;
 
     return {
       minParticles: reducedMotion ? 8 : smallScreen ? 12 : 24,
@@ -1368,6 +1369,7 @@ window.clearAllTechFilters = clearAllTechFilters;
       radius: reducedMotion ? 1.8 : smallScreen ? 2.2 : 4,
       fps: reducedMotion ? 14 : smallScreen ? 20 : 36,
       showLinks: !reducedMotion && !smallScreen,
+      disableAnimation,
     };
   };
 
@@ -1460,9 +1462,32 @@ window.clearAllTechFilters = clearAllTechFilters;
     drawFrame();
   }
 
+  function stopAnimation() {
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    }
+  }
+
+  function startAnimation() {
+    if (!animationFrame) {
+      animationFrame = requestAnimationFrame(draw);
+    }
+  }
+
   const rebuild = () => {
     resize();
+
+    if (profile.disableAnimation) {
+      stopAnimation();
+      ctx.clearRect(0, 0, W, H);
+      canvas.style.display = 'none';
+      return;
+    }
+
+    canvas.style.display = '';
     init();
+    startAnimation();
   };
 
   const handleResize = () => {
@@ -1498,7 +1523,6 @@ window.clearAllTechFilters = clearAllTechFilters;
   bindMediaChange(coarsePointerQuery, handleProfileChange);
 
   rebuild();
-  animationFrame = requestAnimationFrame(draw);
 })();
 
 // =============================================
