@@ -178,6 +178,29 @@ body.light-mode .navbar {
     text-decoration: none;
 }
 
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.pagination-container button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background: #1f2937;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.pagination-container button:hover {
+    background: #2563eb;
+}
 .brand-mark {
     width: 2.125rem;
     height: 2.125rem;

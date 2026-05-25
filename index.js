@@ -225,7 +225,10 @@ function renderGrid() {
     grid.style.display = 'grid';
     noResults.style.display = 'none';
 
-    filtered.forEach(([day, name, url, tags, cat]) => {
+   const start = (currentPage - 1) * itemsPerPage;
+const paginatedProjects = filtered.slice(start, start + itemsPerPage);
+
+paginatedProjects.forEach(([day, name, url, tags, cat]) => {
         const card = document.createElement('div');
         card.className = 'project-card';
 
@@ -248,7 +251,32 @@ function renderGrid() {
         grid.appendChild(card);
     });
 }
+function renderPagination(totalItems) {
+    const container = document.getElementById('paginationContainer');
 
+    if (!container) return;
+
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    container.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+
+        btn.textContent = i;
+
+        if (i === currentPage) {
+            btn.style.backgroundColor = '#2563eb';
+        }
+
+        btn.addEventListener('click', () => {
+            currentPage = i;
+            renderGrid();
+        });
+
+        container.appendChild(btn);
+    }
+}
 /* ============================================================
    FILTER CHIPS
    ============================================================ */
@@ -260,6 +288,7 @@ function initFilterChips() {
             chip.classList.add('active');
             activeFilter = chip.dataset.filter;
             renderGrid();
+            renderPagination(filtered.length);
         });
     });
 }
@@ -273,6 +302,7 @@ function initSearch() {
     input.addEventListener('input', () => {
         searchQuery = input.value.trim();
         renderGrid();
+        
     });
 }
 
