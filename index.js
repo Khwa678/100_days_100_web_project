@@ -487,6 +487,10 @@ function renderGrid() {
   const grid = document.getElementById('projectGrid');
   const noResults = document.getElementById('noResults');
   if (!grid) return;
+    const grid = document.getElementById('projectGrid');
+    const noResults = document.getElementById('noResults');
+
+    if (!grid) return;
 
   const filtered = PROJECTS.filter(([day, name, url, tags, difficulty = '']) => {
     // Category filter
@@ -535,6 +539,19 @@ function renderGrid() {
       return diffA - diffB;
     });
   }
+    const filtered = PROJECTS.filter(([day, name, , , cat]) => {
+        const matchesFilter =
+            activeFilter === 'all' || cat === activeFilter;
+
+        const q = searchQuery.toLowerCase();
+
+        const matchesSearch =
+            !q ||
+            name.toLowerCase().includes(q) ||
+            day.toLowerCase().includes(q);
+
+        return matchesFilter && matchesSearch;
+    });
 
   grid.innerHTML = '';
 
@@ -545,7 +562,7 @@ const paginatedProjects = filtered.slice(start, start + itemsPerPage);
 paginatedProjects.forEach(([day, name, url, tags, cat]) => {
         const card = document.createElement('div');
         card.className = 'project-card';
-=======
+
   if (filtered.length === 0) {
     grid.style.display = 'none';
     if (noResults) noResults.style.display = 'block';
@@ -562,51 +579,55 @@ paginatedProjects.forEach(([day, name, url, tags, cat]) => {
   if (currentPage > totalPages) currentPage = totalPages;
   if (currentPage < 1) currentPage = 1;
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const pageItems = filtered.slice(startIndex, endIndex);
-  const fragment = document.createDocumentFragment();
+ 
+const start = (currentPage - 1) * itemsPerPage;
 
-  pageItems.forEach(([day, name, url, tags]) => {
-    const category = getCategoryFromTags(tags, name);
+const paginatedProjects = filtered.slice(
+    start,
+    start + itemsPerPage
+);
+
+paginatedProjects.forEach(([day, name, url, tags, cat]) => {
+
     const card = document.createElement('div');
 
-    // FIX PART 1: Add a pointer cursor so users know it's clickable
     card.className = 'project-card';
-    card.style.cursor = 'pointer';
 
-    // FIX PART 2: Make the whole card clickable to open the demo in a new tab
-    card.onclick = () => window.open(url.trim(), '_blank');
+    const tagsHTML = tags
+        .map(t => `<span class="tag">${t}</span>`)
+        .join('');
 
-    const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
-    const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
-    const sourceUrl = getSourceUrl(url);
-
-    // FIX PART 3: Add onclick="event.stopPropagation()" to the Demo, Code, and Bookmark buttons
-    // This stops the click from "bubbling up" to the main card, preventing double-opening!
     card.innerHTML = `
-            <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
-            <div class="card-tags">${tagsHTML}</div>
-            <div class="card-footer">
-                <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
-                        Demo <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i> Code
-                    </a>
-                </div>
-                <button class="bookmark-btn ${isBookmarked ? 'active' : ''}" data-id="${day}">
-                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
-                </button>
-            </div>
-        `;
+        <div class="card-meta">
+            <span class="card-day">${day}</span>
 
+            <span class="card-category">
+                ${CATEGORY_LABEL[cat] || cat}
+            </span>
+        </div>
+
+        <div class="card-name">${name}</div>
+
+        <div class="card-tags">
+            ${tagsHTML}
+        </div>
+
+        <div class="card-footer">
+            <a href="${url.trim()}"
+               target="_blank"
+               class="card-link"
+               rel="noopener noreferrer">
+
+                View Demo
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    `;
+
+    grid.appendChild(card);
+});
+
+renderPagination(filtered.length);
     fragment.appendChild(card);
   });
   grid.appendChild(fragment);
@@ -931,6 +952,11 @@ if (copyBookmarksBtn) {
       showToast('Failed to copy bookmarks.');
     }
   });
+        grid.appendChild(card);
+    });
+
+    // Render Pagination Buttons
+    renderPagination(filtered.length);
 }
 function renderPagination(totalItems) {
     const container = document.getElementById('paginationContainer');
@@ -1010,11 +1036,19 @@ document.addEventListener('click', (e) => {
 function initFilterChips() {
 
     const chips = document.querySelectorAll('.chip[data-filter]');
+
     chips.forEach(chip => {
+
         chip.addEventListener('click', () => {
+
             chips.forEach(c => c.classList.remove('active'));
+
             chip.classList.add('active');
+
             activeFilter = chip.dataset.filter;
+
+            currentPage = 1;
+
             renderGrid();
             renderPagination(filtered.length);
         });
@@ -1030,6 +1064,9 @@ function initFilterChips() {
 
     });
   });
+        });
+
+    });
 }
 
 /* ============================================================
@@ -1143,6 +1180,20 @@ function initTechStackSearch() {
    ============================================================ */
 const searchInput = document.getElementById('searchInput');
 const clearSearchBtn = document.getElementById('clearSearch');
+   function initSearch() {
+    const input = document.getElementById('searchInput');
+
+    if (!input) return;
+
+    input.addEventListener('input', () => {
+
+        searchQuery = input.value.trim();
+
+        currentPage = 1;
+
+        renderGrid();
+    });
+}
 
 function syncProjectCounts() {
   let filtered = [...PROJECTS];
