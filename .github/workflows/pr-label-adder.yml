@@ -66,6 +66,7 @@ jobs:
               pr.labels.map(
                 l => l.name
               )
+              
 
               const alreadyProcessed =
                 existing.includes("gssoc:approved") ||
@@ -98,7 +99,7 @@ jobs:
               if(changes < 75)
                 level = "level:beginner"
 
-              else if(changes <= 250)
+              else if(changes <= 850)
                 level = "level:intermediate"
 
               else
