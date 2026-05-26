@@ -141,7 +141,6 @@ function togglePause() {
     btn.textContent = '⏸ Pause';
     document.getElementById('ov').style.display = 'none';
   }
-}
 
 // REPLACE this entire function:
 function showOverlayPause() {
@@ -155,6 +154,7 @@ function showOverlayPause() {
   ov.style.display = 'flex';
   document.getElementById('ov-resume-btn').addEventListener('click', togglePause);
 }
+}x
 
 
 function drawScoreGraph() {
@@ -640,6 +640,7 @@ function showOverlay (type) {
   if (replayBtn2) {
     replayBtn2.onclick = watchReplay;
   }
+}
 function showToast (msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
