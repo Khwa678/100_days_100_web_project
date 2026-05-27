@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
+                             
 <body>
     <div class="ambient ambient-left" aria-hidden="true"></div>
     <div class="ambient ambient-right" aria-hidden="true"></div>
@@ -114,6 +116,16 @@
 
             <div class="project-grid" id="projectGrid"></div>
 
+<div class="chart-container">
+    <div class="chart-header">
+        <h3>Historical Exchange Rates</h3>
+        <p>Visual representation of currency trends over time</p>
+    </div>
+
+    <div class="chart-wrapper">
+        <canvas id="historyChart"></canvas>
+    </div>
+</div>
             <div class="no-results" id="noResults">
                 <i class="fas fa-search"></i>
                 <p>No projects match your search.</p>
@@ -173,3 +185,5 @@
     <script src="index.js"></script>
 </body>
 </html>
+
+
