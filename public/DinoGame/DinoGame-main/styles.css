@@ -734,3 +734,22 @@ body.night .mission-track {
 .combo-glow {
     box-shadow: 0 0 20px rgba(255, 208, 89, 0.6), inset 0 0 18px rgba(255, 255, 255, 0.35);
 }
+.project-back-button{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-decoration: none;
+    z-index: 1000;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.project-back-button:hover{
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.2);
+}
