@@ -2299,6 +2299,8 @@ body.light-mode .brand-mark {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+} /* end @media (max-width: 768px) */
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2319,6 +2321,21 @@ body.light-mode .brand-mark {
 
   .hero-terminal {
     opacity: 0.35;
+  }
+
+  /* ── Global accessibility override ──────────────────────────
+     Catches every animation / transition / smooth-scroll that
+     the component-specific rules above may not cover.
+     Using 0.01ms (not 0) keeps JS animationend events firing
+     so interactive components don't break.
+  ────────────────────────────────────────────────────────── */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
