@@ -216,13 +216,28 @@ function renderGrid() {
 
     grid.innerHTML = '';
 
-    if (filtered.length === 0) {
-        grid.style.display = 'none';
-        noResults.style.display = 'block';
-        return;
+  if (filtered.length === 0) {
+    grid.style.display = 'none';
+    noResults.style.display = 'block';
+
+    const message = noResults.querySelector("p");
+
+    if (message) {
+        message.textContent =
+            searchQuery.length > 0
+                ? `No projects found for "${searchQuery}".`
+                : "No projects match your search.";
     }
 
+    return;
+}
+
     grid.style.display = 'grid';
+    const message = noResults.querySelector("p");
+
+if (message) {
+    message.textContent = "No projects match your search.";
+}
     noResults.style.display = 'none';
 
     filtered.forEach(([day, name, url, tags, cat]) => {
