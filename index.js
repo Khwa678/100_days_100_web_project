@@ -1295,9 +1295,12 @@ function initFilterChips() {
     chip.addEventListener('click', () => {
       chips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
-      activeFilter = chip.dataset.filter;
-      currentPage = 1;
-      renderGrid();
+     activeFilter = chip.dataset.filter;
+currentPage = 1;
+
+updateURL(searchQuery, activeFilter);
+
+renderGrid();
     });
   });
 }
@@ -1324,9 +1327,12 @@ function initSearch() {
   input.addEventListener(
     'input',
     debounce(() => {
-      searchQuery = input.value.trim();
-      currentPage = 1;
-      renderGrid();
+    searchQuery = input.value.trim();
+currentPage = 1;
+
+updateURL(searchQuery, activeFilter);
+
+renderGrid();
     }, 180)
   );
 
@@ -2020,5 +2026,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       applyFilters(search, categoryFilter.value);
     });
   }
-  window.addEventListener('popstate', () => restoreStateFromURL());
+window.addEventListener('popstate', () => {
+  restoreStateFromURL();
+  renderGrid();
+});
 });
