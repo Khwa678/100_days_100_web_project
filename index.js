@@ -902,7 +902,7 @@ function scrollToProjectSection() {
   const distance = targetY - startY;
 
   // Custom snappy scroll duration (100ms matches the quick transitions in your CSS)
-  const duration = 100;
+  const duration = 60;
   let startTime = null;
 
   function animation(currentTime) {
@@ -1675,7 +1675,7 @@ window.addEventListener(
     if (hasProjectGrid()) {
       renderGrid();
     }
-  }, 180)
+  }, 300)
 );
 
 /* ============================================================
@@ -1759,7 +1759,7 @@ initTheme();
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const coarsePointerQuery = window.matchMedia('(pointer: coarse)');
   const palette = [220, 250, 280];
-  const DEFAULT_PARTICLE_FPS = 24;
+  const DEFAULT_PARTICLE_FPS = 15;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -1780,7 +1780,7 @@ initTheme();
 
     return {
       minParticles: reducedMotion ? 8 : smallScreen ? 12 : 18,
-      maxParticles: reducedMotion ? 18 : smallScreen ? 28 : 48,
+     maxParticles: reducedMotion ? 12 : smallScreen ? 16 : 24,
       areaPerParticle: reducedMotion ? 110000 : smallScreen ? 70000 : 32000,
       linkDistance: reducedMotion ? 68 : smallScreen ? 84 : 100,
       velocity: reducedMotion ? 0.12 : smallScreen ? 0.18 : 0.24,
