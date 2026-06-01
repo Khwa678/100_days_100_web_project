@@ -593,12 +593,8 @@ if (focusModeBtn) {
       themeToggleBtn.click();
     }
 
-    if (e.key.toLowerCase() === "f") {
-      document.body.classList.toggle("focus-mode");
-    }
-
-    if (e.code === "Space") {
-      e.preventDefault();
+    window.pauseCountdown = function() {
+        if (countdownTime <= 0) return;
 
       if (stopwatchRunning) {
         pauseStopwatch();
