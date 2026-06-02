@@ -14,7 +14,7 @@ CHANGELOG.md
 # Docker files (avoid recursive copy)
 Dockerfile
 docker-compose.yml
-.dockerignore.
+-.dockerignore.
 
 # Development tooling
 node_modules
