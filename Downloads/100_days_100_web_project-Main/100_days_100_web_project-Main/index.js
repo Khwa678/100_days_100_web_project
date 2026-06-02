@@ -13,7 +13,14 @@ let currentPage = 1;
 let itemsPerPage = 9;
 let projectData = [];
 let filteredProjectData = [];
-
+function escapeHTML(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 /* ============================================================
    TECHNOLOGY STACK FILTERING VARIABLES
@@ -545,19 +552,21 @@ function renderGrid() {
     card.className = 'project-card';
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const tagsArray = typeof tags === 'string' ? tags.split(/\s+/).filter((t) => t) : tags;
-    const tagsHTML = tagsArray.map((t) => `<span class="tag">${t}</span>`).join('');
+   const tagsHTML = tagsArray
+  .map((t) => `<span class="tag">${escapeHTML(t)}</span>`)
+  .join('');
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
-            </div>
-            <div class="card-name">${name}</div>
+             <span class="card-day">${escapeHTML(day)}</span>
+<span class="card-category">${escapeHTML(category)}</span>
+
+<div class="card-name">${escapeHTML(name)}</div>
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
-                    <a href="${url.trim()}" target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
+                    <a href="${encodeURI(url.trim())}"target="_blank" class="card-link open-project" data-id="${day}" rel="noopener noreferrer">
                         Demo <i class="fas fa-arrow-right"></i>
                     </a>
                     <a href="${sourceUrl}" target="_blank" class="card-link view-code-link" rel="noopener noreferrer">
@@ -775,15 +784,19 @@ function renderBookmarks() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+   const tagsHTML = tags.split(' ').map((tag) =>
+  `<span class="tag">${escapeHTML(tag)}</span>`
+).join('');
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
+           <span class="card-day">${escapeHTML(day)}</span>
+<span class="card-category">${escapeHTML(category)}</span>
+
+
             </div>
-            <div class="card-name">${name}</div>
+            <div class="card-name">${escapeHTML(name)}</div>
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
@@ -827,16 +840,18 @@ function renderRecentProjects() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+   const tagsHTML = tags.split(' ').map((tag) =>
+  `<span class="tag">${escapeHTML(tag)}</span>`
+).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
             <div class="card-meta">
-                <span class="card-day">${day}</span>
-                <span class="card-category">${category}</span>
+                <span class="card-day">${escapeHTML(day)}</span>
+                <span class="card-category">${escapeHTML(category)}</span>
             </div>
-            <div class="card-name">${name}</div>
+         <div class="card-name">${escapeHTML(name)}</div>
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
