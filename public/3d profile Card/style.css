@@ -310,6 +310,8 @@ h1 {
 }
 
 .primary-btn {
+  display: inline-flex;
+  align-items: center;
   background: var(--theme);
   color: #fff;
   box-shadow: 0 12px 26px var(--theme-shadow);
@@ -767,6 +769,114 @@ h1 {
     font-size: 1rem;
     line-height: 1.6;
   }
+}
+
+/* ── Download dropdown ── */
+.download-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.primary-btn .chevron-icon {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: middle;
+  transition: transform 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+  flex-shrink: 0;
+}
+
+.primary-btn[aria-expanded="true"] .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.download-dropdown {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  min-width: 200px;
+  background: var(--panel, #fff);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.18),
+    0 6px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px) scale(0.97);
+  transform-origin: bottom right;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.download-dropdown.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: var(--theme-focus, rgba(47, 128, 201, 0.1));
+}
+
+.dropdown-item:hover .format-badge {
+  background: var(--theme);
+  color: #fff;
+}
+
+.format-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--theme-soft);
+  color: var(--theme);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  transition: background 0.15s ease, color 0.15s ease;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.format-desc {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.is-dark .download-dropdown {
+  background: #171b29;
+  border-color: #30374c;
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.4),
+    0 6px 16px rgba(0, 0, 0, 0.24);
+}
+
+.is-dark .format-badge {
+  background: var(--dark-theme-bg);
 }
 
 @keyframes fadeInUp {
