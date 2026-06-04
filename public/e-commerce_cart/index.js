@@ -1159,6 +1159,7 @@ searchInput.addEventListener('keyup', () => {
   }
 
 });
+const submitOrder = document.querySelector('#submit-order');
 const clearCartBtn = document.querySelector('.clear-cart-btn');
 clearCartBtn.addEventListener('click', () => {
 
