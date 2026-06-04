@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Game Companion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎲 Board Game Companion</h1>
+
+        <h2 id="currentPlayer">Player 1's Turn</h2>
+
+        <div class="scores">
+            <p>Player 1 Score: <span id="score1">0</span></p>
+            <p>Player 2 Score: <span id="score2">0</span></p>
+        </div>
+
+        <div class="dice" id="dice">🎲</div>
+
+        <button id="rollBtn">Roll Dice</button>
+
+        <h3 id="category"></h3>
+
+        <div id="questionBox"></div>
+
+        <button id="showAnswer">Reveal Answer</button>
+
+        <div id="answerBox"></div>
+
+        <button id="addPoint">Add Point</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    background:#f4f4f4;
+}
+
+.container{
+    width:80%;
+    margin:auto;
+    margin-top:30px;
+}
+
+.dice{
+    font-size:80px;
+    margin:20px;
+}
+
+button{
+    padding:10px 20px;
+    margin:10px;
+    cursor:pointer;
+}
+
+#questionBox,
+#answerBox{
+    margin-top:20px;
+    font-size:18px;
+}
