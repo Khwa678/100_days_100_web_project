@@ -62,7 +62,9 @@ const generateTextCaptcha = () => {
     }
 };
 
-const generateImageCaptcha = () => {
+const 
+
+generateImageCaptcha = () => {
     const images = [
         { emoji: '<i class="fas fa-dog fa-2x" style="color: #8b5a2b;"></i>', name: 'dog' },
         { emoji: '<i class="fas fa-cat fa-2x" style="color: #f59e0b;"></i>', name: 'cat' },
@@ -130,6 +132,7 @@ const generateCaptcha = () => {
         case 'text':
             currentCaptcha = generateTextCaptcha();
             document.querySelector(".textcaptcha").style.display = "block";
+              textInput.disabled = false;
             const fontSize = selectedDifficulty === 'hard' ? '18px' : '24px';
             const filter = selectedDifficulty === 'hard' ? 'blur(0.5px)' : 'none';
             captchaContainer.innerHTML = `
@@ -139,10 +142,12 @@ const generateCaptcha = () => {
                 <p style="font-size:12px; color:#888;">Difficulty: ${selectedDifficulty}</p>
             `;
             break;
-        case 'image':
-            const { images, correct } = generateImageCaptcha();
-            currentCaptcha = correct.name;
-            document.querySelector(".textcaptcha").style.display = "none";
+       case 'image':
+    const { images, correct } = generateImageCaptcha();
+    currentCaptcha = correct.name;
+    document.querySelector(".textcaptcha").style.display = "none";
+    textInput.disabled = true;
+    textInput.value = "";
             captchaContainer.innerHTML = `
                 <p>Select the ${correct.name}</p>
                 <div class="image-grid">
@@ -158,9 +163,10 @@ const generateCaptcha = () => {
                 });
             });
             break;
-        case 'audio':
-            currentCaptcha = generateTextCaptcha();
-            document.querySelector(".textcaptcha").style.display = "block";
+       case 'audio':
+    currentCaptcha = generateTextCaptcha();
+    document.querySelector(".textcaptcha").style.display = "block";
+    textInput.disabled = false;
             captchaContainer.innerHTML = `
                 <p>Click play and enter the spoken characters:</p>
                 <button id="playAudio">Play Audio</button>
@@ -178,10 +184,11 @@ const generateCaptcha = () => {
                 }
             });
             break;
-        case 'math':
-            const { question, answer } = generateMathCaptcha();
-            currentCaptcha = answer.toString();
-            document.querySelector(".textcaptcha").style.display = "block";
+       case 'math':
+    const { question, answer } = generateMathCaptcha();
+    currentCaptcha = answer.toString();
+    document.querySelector(".textcaptcha").style.display = "block";
+    textInput.disabled = false;
             captchaContainer.innerHTML = `
                 <span style="font-size: 24px;">${question} = ?</span>
                 <p style="font-size:12px; color:#888;">Difficulty: ${selectedDifficulty}</p>

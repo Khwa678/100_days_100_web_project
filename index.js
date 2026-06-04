@@ -377,7 +377,7 @@ function updateTechFilterDisplay() {
       </button>
     </span>
   `).join('');
-}
+} 
 
 /**
  * Get all unique technologies from projects (optional utility)
