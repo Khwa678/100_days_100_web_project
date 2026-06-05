@@ -128,3 +128,14 @@ Contributions are welcome. Feel free to improve the user interface, add new feat
 ## Author
 
 Developed by **Khwahish Seth** as an open-source productivity and project management application.
+
+
+
+
+
+
+
+
+
+
+

@@ -2410,5 +2410,13 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/Escape_Room/index.html"
-  }
+  },
+  {
+  "id": 206,
+  "title": "Tower Blocks Stacker",
+  "description": "Canvas based tower stacking arcade game.",
+  "folder": "TowerBlocksStacker",
+  "tech": ["HTML", "CSS", "JavaScript"],
+  "difficulty": "Intermediate"
+}
 ]

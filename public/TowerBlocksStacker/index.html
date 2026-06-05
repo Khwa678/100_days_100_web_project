@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Blocks Stacker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="menu" class="overlay active">
+    <h1>Tower Blocks Stacker</h1>
+    <button id="startBtn">Start Game</button>
+</div>
+
+<div id="pauseMenu" class="overlay">
+    <h1>Paused</h1>
+    <button id="resumeBtn">Resume</button>
+</div>
+
+<div id="gameOverMenu" class="overlay">
+    <h1>Game Over</h1>
+    <p id="finalScore"></p>
+    <button onclick="location.reload()">Play Again</button>
+</div>
+
+<div id="hud">
+    <span>Score: <span id="score">0</span></span>
+    <button id="pauseBtn">Pause</button>
+</div>
+
+<canvas id="gameCanvas"></canvas>
+
+<script src="script.js"></script>
+</body>
+</html>
