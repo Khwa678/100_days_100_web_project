@@ -940,3 +940,60 @@ window.addEventListener("resize", () => {
     renderTiles(null, 0, null);
   }
 });
+
+/* =========================================================
+   How to Play Modal
+   ========================================================= */
+
+(function initHowToPlayModal() {
+  const modal      = document.getElementById('howto-modal');
+  const openBtn    = document.getElementById('howto-btn');
+  const closeBtn   = document.getElementById('howto-close');
+  const closeBtn2  = document.getElementById('howto-close2');
+  const inlineBtn  = document.getElementById('howto-inline-btn');
+
+  if (!modal || !openBtn) return; // safety guard
+
+  /** Open the modal and trap focus */
+  function openModal() {
+    modal.style.display = 'flex';
+    modal.removeAttribute('aria-hidden');
+    // Focus the close button for accessibility
+    setTimeout(() => closeBtn && closeBtn.focus(), 80);
+    // Prevent background scroll on mobile
+    document.body.style.overflow = 'hidden';
+  }
+
+  /** Close the modal */
+  function closeModal() {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    openBtn.focus(); // return focus to trigger button
+  }
+
+  openBtn.addEventListener('click', openModal);
+  if (inlineBtn)  inlineBtn.addEventListener('click', openModal);
+  if (closeBtn)   closeBtn.addEventListener('click', closeModal);
+  if (closeBtn2)  closeBtn2.addEventListener('click', closeModal);
+
+  // Close on backdrop click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.style.display !== 'none') {
+      closeModal();
+    }
+  });
+
+  // Show on first visit (no localStorage key present)
+  try {
+    if (!localStorage.getItem('2048_howto_seen')) {
+      setTimeout(openModal, 600);
+      localStorage.setItem('2048_howto_seen', '1');
+    }
+  } catch (_) {}
+})();
