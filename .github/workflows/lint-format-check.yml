@@ -21,13 +21,9 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install Dependencies
-      run: |
-        if [ -f package-lock.json ]; then
-          npm ci
-        else
-          npm install
-        fi
+     - name: Install Dependencies
+       run: npm ci
+
 
     - name: Collect changed lint targets
       id: changed-files
@@ -75,6 +71,7 @@ jobs:
       if: steps.changed-files.outputs.has_lint_targets == 'true'
       run: xargs -0 -a lint-targets.txt npx prettier --check
 
+
     - name: Run ESLint Check
-      if: steps.changed-files.outputs.has_js_targets == 'true'
-      run: xargs -0 -a js-targets.txt npx eslint --allow-empty-files || echo "No JS files or ESLint not fully configured yet"
+  if: steps.changed-files.outputs.has_js_targets == 'true'
+  run: xargs -0 -a js-targets.txt npx eslint --allow-empty-files
