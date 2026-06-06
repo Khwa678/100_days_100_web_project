@@ -275,6 +275,7 @@ button:disabled {
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
+<<<<<<< HEAD
 .toast.visible {
   opacity: 1;
   transform: translateY(0);
@@ -404,6 +405,8 @@ button:disabled {
   }
 }
 
+=======
+>>>>>>> 99618c4465acf5d9ea37c7bde6858554018ada1f
 
 #mazeContainer.preview canvas {
   filter: blur(8px);

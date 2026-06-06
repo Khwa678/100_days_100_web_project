@@ -2,7 +2,7 @@
 
 ## Description
 
-=======
+
 TaskFlow is a modern, fully client-side task management web application built using HTML, CSS, and JavaScript. It provides a clean and interactive UI for managing daily tasks with features like filtering, themes, local storage, and PDF export.
 
 
@@ -20,7 +20,7 @@ TaskFlow is a modern and responsive To-Do List web application designed to help 
 * LocalStorage support for persistent data
 * Smooth animations and interactions
 
-=======
+
 - ➕ Add, edit, complete, and delete tasks
 - 🎯 Filter tasks by status and category
 - 🌈 5 beautiful UI themes:

@@ -685,6 +685,7 @@ function startRenderLoop() {
   mazeContainer.classList.add("active");
 
   makeMaze();
+<<<<<<< HEAD
 =======
   animationFrameId = requestAnimationFrame(loop);
 }
@@ -753,4 +754,6 @@ if (document.readyState === 'loading') {
 } else {
   initialize();
 
+=======
+>>>>>>> 99618c4465acf5d9ea37c7bde6858554018ada1f
 }
