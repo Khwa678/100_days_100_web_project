@@ -1976,8 +1976,8 @@ body.light-mode .footer.homepage-footer .social-btn {
 #themeToggle i,
 #themeToggleNav i {
   transition:
-    transform 0.25s var(--t),
-    color 0.25s var(--t);
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #themeToggle:hover,
@@ -1990,8 +1990,13 @@ body.light-mode .footer.homepage-footer .social-btn {
 
 #themeToggle:hover i,
 #themeToggleNav:hover i {
-  transform: rotate(20deg);
+  transform: rotate(20deg) scale(1.15);
   color: var(--accent-color);
+}
+
+#themeToggle:active i,
+#themeToggleNav:active i {
+  transform: rotate(20deg) scale(1.15);
 }
 
 @media (max-width: 768px) {
@@ -2997,3 +3002,14 @@ body > header {
   z-index: 999999 !important;
 }
 
+
+/* Theme transition enhancement */
+
+.theme-transitioning,
+.theme-transitioning * {
+  transition:
+    background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}

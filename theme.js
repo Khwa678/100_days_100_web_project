@@ -83,7 +83,7 @@
     transitionTimer = setTimeout(() => {
       root.removeAttribute("data-theme-transitioning");
       document.body?.classList.remove("theme-transitioning");
-    }, 250);
+    }, 500);
   };
 
   const toggleTheme = () => {
