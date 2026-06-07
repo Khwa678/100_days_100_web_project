@@ -371,6 +371,8 @@ function update(dt){
   if(!bus.crashed){
     busStops.forEach(stop=>{
       if(stop.pickedUp) return;
+      // BUG 1 FIX: Skip pickup at active destination stop — drop off first
+      if(bus.destStop && bus.destStop.id === stop.id) return;
       const sx = stop.worldX - worldX + W*0.25;
       const sy = ROAD_Y + ROAD_H + 2; // stop is below road
       const bx = bus.x, by = bus.y;
@@ -428,16 +430,19 @@ function update(dt){
     });
   }
 
-  // Red light violation check
+  // BUG 2 FIX: Red light penalty only once per crossing
   if(!bus.crashed && bus.speed > 40){
     signals.forEach(s=>{
-      if(s.state !== 'red') return;
+      if(s.state !== 'red'){ s.penalized = false; return; }
       const sx = s.worldX - worldX + W*0.25;
-      if(Math.abs(bus.x - sx) < 40 && Math.abs(bus.y - LANE2_Y) < 40){
+      const inZone = Math.abs(bus.x - sx) < 40 && Math.abs(bus.y - LANE2_Y) < 40;
+      if(inZone && !s.penalized){
+        s.penalized = true;
         earnings = Math.max(0, earnings - 10);
         flashScreen('rgba(255,0,0,0.25)');
         showPopup('-₹10 RED LIGHT!', '#FF3333');
       }
+      if(!inZone) s.penalized = false;
     });
   }
 
