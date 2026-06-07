@@ -2579,12 +2579,7 @@
     "projectName": "Gravity Well",
     "projectType": "Animation",
     "projectDesc": "Interactive physics-based gravity simulation allowing users to create gravitational wells.",
-    "techStack": [
-      "HTML",
-      "canvas",
-      "javascript",
-      "css"
-    ],
+    "techStack": ["HTML", "canvas", "javascript", "css"],
     "difficulty": "intermediate",
     "projectPath": "./public/gravity-well/index.html"
   },
@@ -2704,5 +2699,14 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Mood_Based_Music_Recommender/"
+  },
+  {
+    "projectNo": 216,
+    "projectName": "Gemini Clone",
+    "projectType": "AI",
+    "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
+    "techStack": ["react", "javascript", "html", "css", "api", "vite"],
+    "difficulty": "advanced",
+    "projectPath": "./public/Gemini/index.html"
   }
 ]
