@@ -220,3 +220,85 @@ body {
         padding: 15px;
     }
 }
+
+.project-back-button{
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: white;
+    text-decoration: none;
+    z-index: 9999;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+
+@media (max-width: 480px){
+    .project-back-button{
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+
+
+.captcha-types{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.type-btn{
+    flex: 1 1 120px;
+}
+
+
+.captcha-input-group{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.textcaptcha{
+    flex: 1;
+}
+
+.textcaptcha input{
+    width: 100%;
+}
+@media (max-width: 768px){
+
+    .container{
+        width: 95%;
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .captcha-types{
+        flex-direction: column;
+    }
+
+    .type-btn{
+        width: 100%;
+    }
+
+    .captcha-input-group{
+        flex-direction: column;
+    }
+
+    .refresh{
+        width: 100%;
+    }
+
+    .button button{
+        width: 100%;
+    }
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    overflow-x: hidden;
+}
