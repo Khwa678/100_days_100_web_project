@@ -195,3 +195,118 @@ button {
         width: 100%;
     }
 }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    background: linear-gradient(
+        -45deg,
+        #667eea,
+        #764ba2,
+        #6dd5ed,
+        #23a6d5
+    );
+
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.game-card {
+    background: rgba(255,255,255,0.12);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    border-radius: 24px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,0.25);
+
+    animation: slideIn 0.5s ease;
+}
+
+#guessInput {
+    flex: 2;
+
+    padding: 15px;
+
+    font-size: 1.1em;
+
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,0.3);
+
+    background: rgba(255,255,255,0.15);
+
+    backdrop-filter: blur(10px);
+
+    color: white;
+}
+#guessInput::placeholder{
+    color: rgba(255,255,255,0.8);
+}
+button:hover{
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,.2);
+}
+
+.theme-toggle{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 1.2rem;
+
+    background: rgba(255,255,255,.2);
+
+    backdrop-filter: blur(10px);
+
+    z-index: 1000;
+}
+
+body.dark{
+    background:
+    linear-gradient(
+        -45deg,
+        #0f172a,
+        #1e293b,
+        #111827,
+        #020617
+    );
+}
+
+body.dark .game-card{
+    color:white;
+}
+
+body.dark h1,
+body.dark .subtitle{
+    color:white;
+}
+
+
+.stat-box:hover{
+    transform: translateY(-5px);
+}
