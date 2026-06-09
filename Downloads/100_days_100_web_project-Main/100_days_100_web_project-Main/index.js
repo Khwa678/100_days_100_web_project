@@ -1,7 +1,7 @@
-/* ============================================================
+/* 
    CONFIGURATION
-   ============================================================ */
-if (typeof REPO_OWNER === 'undefined') {
+    */
+if (typeof REPO_OWNER == 'undefined') {
   window.REPO_OWNER = 'dhairyagothi';
   window.REPO_NAME = '100_days_100_web_project';
 }
@@ -22,9 +22,9 @@ function escapeHTML(str) {
     .replace(/'/g, "&#39;");
 }
 
-/* ============================================================
+/* 
    TECHNOLOGY STACK FILTERING VARIABLES
-   ============================================================ */
+ */
 let techStackFilters = []; // Array of active tech filters
 let techSearchQuery = ''; // Current tech search input
 
@@ -1154,9 +1154,9 @@ function initTheme() {
   });
 }
 
-/* ============================================================
+/* 
    SCROLL TO TOP
-   ============================================================ */
+    */
 function initScrollBtn() {
   const btn = document.getElementById('scrollBtn');
   const ring = document.getElementById('ringFill');
@@ -1181,9 +1181,9 @@ function initScrollBtn() {
   });
 }
 
-/* ============================================================
+/* 
    INIT
-   ============================================================ */
+    */
 function hasProjectGrid() {
   return Boolean(document.getElementById('projectGrid'));
 }
@@ -1257,9 +1257,9 @@ window.addEventListener('resize', () => {
   }
 });
 
-/* ============================================================
+/* 
    EXPOSE FUNCTIONS TO GLOBAL SCOPE
    (Required for HTML onclick handlers)
-   ============================================================ */
+    */
 window.removeTechFilter = removeTechFilter;
 window.clearAllTechFilters = clearAllTechFilters;
