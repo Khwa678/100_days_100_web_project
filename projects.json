@@ -2810,7 +2810,7 @@
 
     
   {
-    "projectNo": 222,
+    "projectNo": 223,
     "projectName": "HTML & CSS Animation",
     "projectType": "Web Application",
     "projectDesc": "Collection of HTML/CSS animations demonstrating keyframe effects and transitions.",
@@ -2823,7 +2823,7 @@
     "projectPath": "./public/Html_css_animation/index.html"
     },
   {
-    "projectNo": 223,
+    "projectNo": 224,
     "projectName": "Bubble Game",
     "projectType": "Web Application",
     "projectDesc": "An interactive bubble-clicking game where players must quickly hit bubbles matching the target number before the timer runs out. Score points by selecting the correct bubbles and test your speed and accuracy.",
