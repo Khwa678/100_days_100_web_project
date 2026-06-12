@@ -61,30 +61,38 @@
           <div class="progress-bar-track">
             <div class="progress-bar-fill" id="progressFill"></div>
           </div>
+          <button type="button" id="savepdf" class="sidebar-back-btn"
+            style="background: rgba(124, 99, 255, 0.1); color: #c4b5ff">
+            📥 Save as PDF
+          </button>
+
+          <button type="button" id="cleardone" class="sidebar-pdf-btn">
+            🗑️ Clear Workspace
+          </button>
+
+          <button type="button" id="clearCompletedBtn" class="sidebar-pdf-btn"
+            style="background: rgba(16, 185, 129, 0.1); color: #10b981;" hidden>
+            ✅ Clear Completed
+          </button>
+
           <output class="progress-text" id="progressText">0 / 0 done</output>
         </div>
       </div>
 
-      <!-- Input Area -->
-      <form class="input-panel" id="task-form" novalidate>
-        <div class="input-group">
-          <label for="task-category" class="sr-only">Choose task category</label>
-          <select id="task-category" aria-label="Choose task category">
-            <option value="" disabled selected>📂 Category</option>
-            <option value="Work">💼 Work</option>
-            <option value="Personal">🧑 Personal</option>
-            <option value="Urgent">⚡ Urgent</option>
-            <option value="Fitness">💪 Fitness</option>
-            <option value="Miscellaneous">📌 Miscellaneous</option>
-          </select>
-          <label for="task" class="sr-only">Task description</label>
-          <input type="text" id="task" placeholder="What do you need to do?" autocomplete="off" />
-          <button type="submit" id="submittask">➕ Add Task</button>
-        </div>
-        <div class="input-actions">
-          <button type="button" id="savepdf">📥 Save as PDF</button>
-          <button type="button" id="cleardone" hidden>🧹 Clear Done</button>
-        </div>
+      <!-- Task Input Form -->
+      <form id="task-form" class="input-actions" aria-label="Add a new task">
+        <input type="text" id="task" class="task-input" placeholder="What needs to be done?" autocomplete="off"
+          aria-label="Task description" />
+        <select id="task-category" class="task-select" aria-label="Task category">
+          <option value="">Category</option>
+          <option value="Work" data-color="#60a5fa">💼 Work</option>
+          <option value="Personal" data-color="#a78bfa">🧑 Personal</option>
+          <option value="Urgent" data-color="#f87171">⚡ Urgent</option>
+          <option value="Fitness" data-color="#34d399">💪 Fitness</option>
+          <option value="Study" data-color="#fbbf24">📚 Study</option>
+          <option value="Miscellaneous" data-color="#94a3b8">📌 Miscellaneous</option>
+        </select>
+        <button type="submit" class="add-btn" aria-label="Add task">+ Add Task</button>
       </form>
 
       <!-- Filter Bar -->
@@ -100,14 +108,45 @@
       </div>
 
       <!-- Empty State -->
-      <div class="empty-state" id="emptyState" role="status">
+      <div class="empty-state" id="emptyState" role="status" style="margin-top: 50px;">
         <div class="empty-icon" aria-hidden="true">📋</div>
         <p class="empty-title">No tasks yet</p>
-        <p class="empty-desc">Add your first task above and get things done!</p>
       </div>
 
       <!-- Task List Container -->
       <ul id="notes-container" aria-label="Task list"></ul>
+
+      <!-- Clear Workspace Confirmation Modal -->
+      <div id="clearModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+        style="display:none;">
+        <div class="modal-box">
+          <div class="modal-icon">🧹</div>
+          <h2 class="modal-title" id="modalTitle">Clear Workspace?</h2>
+          <p class="modal-desc">This will permanently remove all tasks from your board. This action cannot be undone.
+          </p>
+          <div class="modal-actions">
+            <button id="modalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+            <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear All</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clear Completed Confirmation Modal -->
+      <div id="clearCompletedModal" class="modal-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="completedModalTitle" style="display:none;">
+        <div class="modal-box">
+          <div class="modal-icon">✅</div>
+          <h2 class="modal-title" id="completedModalTitle">Clear Completed Tasks?</h2>
+          <p class="modal-desc">This will permanently remove all tasks from the
+            <strong style="color: #10b981;">Completed column</strong> only. Your Pending and In Progress tasks will
+            remain untouched. This action cannot be undone.
+          </p>
+          <div class="modal-actions">
+            <button id="completedModalCancelBtn" class="modal-btn modal-btn-cancel">Cancel</button>
+            <button id="completedModalConfirmBtn" class="modal-btn modal-btn-confirm">Yes, Clear Completed</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Documents Section -->
@@ -124,10 +163,122 @@
     </section>
   </main>
 
-  <!-- PDF Notification -->
-  <div id="pdfMessage" class="pdf-message" role="alert" aria-live="polite">✅ PDF Created Successfully!</div>
+  <!-- Toast Notification (new top-center popup) -->
+  <div id="appToast" class="toast-popup" role="alert" aria-live="polite"></div>
 
   <script src="todolist.js"></script>
+
+  <script>
+    // ─── Modern Top-Center Toast ─────────────────────────────────
+    // Overrides the basic showToast() from todolist.js with a proper popup
+    let _toastTimer = null;
+    function showToast(message, type) {
+      const el = document.getElementById('appToast');
+      if (!el) return;
+      el.textContent = message;
+      el.className = 'toast-popup toast-show';
+      if (type === 'success') el.classList.add('toast-success');
+      else if (type === 'error') el.classList.add('toast-error');
+      else el.classList.add('toast-info');
+      clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => {
+        el.classList.remove('toast-show', 'toast-success', 'toast-error', 'toast-info');
+      }, 3000);
+    }
+
+    // ─── Fix Button Visibility ─────────────────────────────────────────────
+    // todolist.js updateMetrics() hides #cleardone when done===0 (wrong behaviour).
+    // FIX: capture the original FIRST (before any override), then assign via window
+    // to avoid JS function-declaration hoisting which caused _origUpdateMetrics to
+    // point to our own new function instead of todolist.js's version.
+    const _origUpdateMetrics = window.updateMetrics; // captured BEFORE override
+    window.updateMetrics = function () {
+      if (_origUpdateMetrics) _origUpdateMetrics.call(this); // runs todolist.js version
+      const completedCount = tasks.filter(t => t.completed).length;
+      // Clear Workspace — always visible (todolist.js hides it incorrectly)
+      const cwBtn = document.getElementById('cleardone');
+      if (cwBtn) cwBtn.hidden = false;
+      // Clear Completed — only when there are completed tasks
+      const ccBtn = document.getElementById('clearCompletedBtn');
+      if (ccBtn) ccBtn.hidden = completedCount === 0;
+    };
+    // Run immediately to set correct initial state
+    window.updateMetrics();
+
+    // ─── Clear Completed Button Logic ──────────────────────────
+    const clearCompletedBtn = document.getElementById('clearCompletedBtn');
+    const clearCompletedModal = document.getElementById('clearCompletedModal');
+    const completedModalCancelBtn = document.getElementById('completedModalCancelBtn');
+    const completedModalConfirmBtn = document.getElementById('completedModalConfirmBtn');
+
+    if (clearCompletedBtn) {
+      clearCompletedBtn.addEventListener('click', () => {
+        const completedCount = tasks.filter(t => t.completed).length;
+        if (completedCount === 0) {
+          showToast('✨ No completed tasks to clear!', 'info');
+          return;
+        }
+        clearCompletedModal.style.display = 'flex';
+      });
+    }
+
+    if (completedModalCancelBtn) {
+      completedModalCancelBtn.addEventListener('click', () => {
+        clearCompletedModal.style.display = 'none';
+      });
+    }
+
+    if (completedModalConfirmBtn) {
+      completedModalConfirmBtn.addEventListener('click', () => {
+        tasks = tasks.filter(t => !t.completed);
+        saveTasks();
+        renderTasks();
+        clearCompletedModal.style.display = 'none';
+        showToast('✅ Completed tasks cleared!', 'success');
+      });
+    }
+
+    // Close completed modal on backdrop click
+    if (clearCompletedModal) {
+      clearCompletedModal.addEventListener('click', (e) => {
+        if (e.target === clearCompletedModal) clearCompletedModal.style.display = 'none';
+      });
+    }
+
+    // ─── Clear Workspace (All Tasks) Modal Logic ─────────────────
+    const modalCancelBtn = document.getElementById('modalCancelBtn');
+    const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+    const clearModal = document.getElementById('clearModal');
+
+    // Intercept cleardone click (capture phase beats todolist.js bubble handler)
+    document.getElementById('cleardone').addEventListener('click', (e) => {
+      e.stopImmediatePropagation();
+      if (clearModal) clearModal.style.display = 'flex';
+    }, true);
+
+    if (modalCancelBtn) {
+      modalCancelBtn.addEventListener('click', () => {
+        clearModal.style.display = 'none';
+      });
+    }
+
+    if (modalConfirmBtn) {
+      modalConfirmBtn.addEventListener('click', () => {
+        tasks = [];
+        saveTasks();
+        renderTasks();
+        clearModal.style.display = 'none';
+        showToast('🧹 All tasks cleared!', 'success');
+      });
+    }
+
+    // Close workspace modal on backdrop click
+    if (clearModal) {
+      clearModal.addEventListener('click', (e) => {
+        if (e.target === clearModal) clearModal.style.display = 'none';
+      });
+    }
+  </script>
 </body>
 
 </html>
