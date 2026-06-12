@@ -1756,16 +1756,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   initTechStackSearch();
   initClearAllFilters();
 // Before
-initStreak();
+
 
 // After
+initClearAllFilters();
+
 if (typeof initStreak === "function") {
     initStreak();
 }
- if (typeof initStreak === "function") {
-  initStreak();
-}
-  updateGamifiedUI();
+
+updateGamifiedUI();
 
   try {
     await loadProjects();
