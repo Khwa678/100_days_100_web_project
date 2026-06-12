@@ -1901,6 +1901,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
+<<<<<<< HEAD
+=======
+// Before
+
+
+// After
+initClearAllFilters();
+
+if (typeof initStreak === "function") {
+    initStreak();
+}
+
+updateGamifiedUI();
+>>>>>>> 3ae36bc8 (Fix initStreak undefined error during initialization)
 
   try {
     await loadProjects();
