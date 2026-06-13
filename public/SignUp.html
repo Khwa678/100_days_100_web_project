@@ -446,11 +446,44 @@
         // Store user data (keyed by username — matches Login.html lookup)
         localStorage.setItem(username, JSON.stringify({ name, email, password }));
 
+        const sessionHelper = window.AuthSession;
+        const sessionData = sessionHelper?.persistAuthSession
+          ? sessionHelper.persistAuthSession(
+              {
+                username,
+                name,
+                email,
+              },
+              "password",
+              "signup"
+            )
+          : {
+              username,
+              name,
+              email,
+              authAction: "signup",
+            };
+
+        localStorage.setItem("loggedInUser", sessionData.username || username);
+        localStorage.setItem(
+          "loggedInUserData",
+          JSON.stringify({
+            ...sessionData,
+            username: sessionData.username || username,
+            name: sessionData.name || name,
+            email: sessionData.email || email,
+            provider: sessionData.provider || "password",
+            authAction: sessionData.authAction || "signup",
+            loginTime: sessionData.loginTime || Date.now(),
+            timezone: sessionData.timezone || "Asia/Kolkata",
+          })
+        );
+
           showToast("Signup successful!", "success");
 
           // Delay redirect slightly for premium toast visibility
           setTimeout(() => {
-            window.location.href = "Login.html";
+            window.location.href = "../index.html";
           }, 1200);
         });
     </script>
