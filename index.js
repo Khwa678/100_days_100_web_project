@@ -1901,8 +1901,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initSorting();
   initTechStackSearch();
   initClearAllFilters();
-<<<<<<< HEAD
-=======
+
 // Before
 
 
