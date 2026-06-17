@@ -7,7 +7,7 @@ const STORAGE_KEY_HISTORY = 'gemini_chat_history';
 const STORAGE_KEY_THEME   = 'gemini_theme';
 
 /* ===========================
-   STATE
+   STATE  
 =========================== */
 let geminiApiKey      = localStorage.getItem(STORAGE_KEY_API) || '';
 let selectedImageBase64 = null;
