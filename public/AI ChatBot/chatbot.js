@@ -5,7 +5,7 @@ const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-
 const STORAGE_KEY_API     = 'gemini_api_key';
 const STORAGE_KEY_HISTORY = 'gemini_chat_history';
 const STORAGE_KEY_THEME   = 'gemini_theme';
-
+   
 /* ===========================
    STATE  
 =========================== */
