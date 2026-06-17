@@ -1,4 +1,13 @@
-  feature/lumix-chatbot[m
+.insects-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  list-style: none;
+  padding: 0;
+  flex-wrap: wrap;
+  max-width: 1200px;
+}  feature/lumix-chatbot[m
   fix-calendar-overlap[m
   fix-chart-issue-clean[m
   fix-chart-issue-v2[m
