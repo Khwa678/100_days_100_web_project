@@ -295,7 +295,7 @@ h1 {
 
 @keyframes float {
   0% {
-    transform: translate(-50%, -50%) translateY(0px);
+    transform:  translate(-50%, -50%) translateY(0px);
   }
 
   50% {
