@@ -1,116 +1,238 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+  <style>
+    #bg{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+.container{
+  position:relative;
+  z-index:10;
+}
+
+body{
+  background:#080b18;
+}
+  </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BMI Calculator</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+    <title>Premium BMI Calculator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- Animated Background -->
     <canvas id="bg"></canvas>
 
-    <div class="page">
-      <div class="bmi-grid">
+    <div class="container">
 
-        <!-- Left: Calculator -->
-        <div class="card">
-          <div class="gold-line"></div>
-          <div class="top-bar">
-            <p class="card-title">Body Mass Index</p>
-            <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">◐</button>
-          </div>
+        <!-- Left Panel -->
+        <div class="calculator-card glass">
 
-          <div class="field-row">
-            <div class="field">
-              <div class="field-label">Height unit</div>
-              <select id="height-unit">
-                <option value="cm">Centimetres</option>
-                <option value="feet">Feet / inches</option>
-              </select>
+            <div class="card-header">
+                <h1>BMI Calculator</h1>
+                <p>
+                    Calculate your Body Mass Index and discover your healthy
+                    weight range instantly.
+                </p>
             </div>
-            <div class="field">
-              <div class="field-label" id="height-lbl">Height (cm)</div>
-              <input type="text" id="height" placeholder="e.g. 170" />
-            </div>
-          </div>
 
-          <div class="field-row">
-            <div class="field">
-              <div class="field-label">Weight unit</div>
-              <select id="weight-unit">
-                <option value="kg">Kilograms</option>
-                <option value="lb">Pounds</option>
-              </select>
-            </div>
-            <div class="field">
-              <div class="field-label" id="weight-lbl">Weight (kg)</div>
-              <input type="number" id="weight" placeholder="e.g. 70" min="1" />
-            </div>
-          </div>
+            <div class="form-grid">
 
-          <button id="btn">Calculate BMI</button>
-          <div id="error-msg" class="error-msg hidden"></div>
+                <!-- Height -->
+                <div class="input-group">
+                    <label>Height Unit</label>
 
-          <div class="result-row hidden" id="results">
-            <div class="metric-card">
-              <div class="metric-label">BMI score</div>
-              <div class="metric-value" id="bmi-val">—</div>
-              <span class="category-badge" id="cat-badge"></span>
-            </div>
-            <div class="metric-card">
-              <div class="metric-label">Healthy weight range</div>
-              <div class="metric-value range-val" id="healthy-range">—</div>
-              <div class="tip-text" id="tip-text"></div>
-            </div>
-          </div>
+                    <select id="height-unit">
+                        <option value="cm">Centimetres</option>
+                        <option value="feet">Feet / Inches</option>
+                    </select>
+                </div>
 
-          <div id="range-vis" class="range-vis hidden">
-            <div class="range-bar">
-              <div class="range-segments">
-                <div class="seg seg-blue"  style="flex: 2.1"></div>
-                <div class="seg seg-green" style="flex: 6.4"></div>
-                <div class="seg seg-amber" style="flex: 5"></div>
-                <div class="seg seg-red"   style="flex: 6.5"></div>
-              </div>
-              <div class="bmi-pointer" id="bmi-ptr" style="left: 0%"></div>
+                <div class="input-group">
+                    <label id="height-lbl">Height (cm)</label>
+
+                    <input
+                        type="text"
+                        id="height"
+                        placeholder="e.g. 170"
+                    >
+                </div>
+
+                <!-- Weight -->
+                <div class="input-group">
+                    <label>Weight Unit</label>
+
+                    <select id="weight-unit">
+                        <option value="kg">Kilograms</option>
+                        <option value="lb">Pounds</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label id="weight-lbl">Weight (kg)</label>
+
+                    <input
+                        type="number"
+                        id="weight"
+                        placeholder="e.g. 70"
+                    >
+                </div>
+
             </div>
-            <div class="range-labels">
-              <span>10</span><span>18.5</span><span>25</span><span>30</span><span>40+</span>
+
+            <div
+                id="error-msg"
+                class="error-box hidden"
+            ></div>
+
+            <div class="button-group">
+                <button id="btn" class="primary-btn">
+                    Calculate BMI
+                </button>
             </div>
-          </div>
+
+            <!-- Result -->
+            <div
+                id="results"
+                class="result-card glass hidden"
+            >
+
+                <div class="gauge-section">
+
+                    <div class="gauge-container">
+
+                        <div class="gauge">
+
+                            <div class="gauge-cover">
+
+                                <span id="bmi-val">
+                                    --
+                                </span>
+
+                                <small>
+                                    BMI Score
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="result-details">
+
+                    <div
+                        id="cat-badge"
+                        class="category-badge"
+                    ></div>
+
+                    <h2 id="healthy-range">
+                        --
+                    </h2>
+
+                    <p id="tip-text">
+                        --
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- BMI Range -->
+            <div
+                id="range-vis"
+                class="range-section glass hidden"
+            >
+
+                <div
+                    style="
+                        height:20px;
+                        background:linear-gradient(
+                        to right,
+                        #4f6ef7,
+                        #3ecf8e,
+                        #e8a838,
+                        #e05c5c
+                        );
+                        border-radius:20px;
+                        position:relative;
+                    "
+                >
+
+                    <div
+                        id="bmi-ptr"
+                        style="
+                            width:16px;
+                            height:16px;
+                            border-radius:50%;
+                            background:white;
+                            position:absolute;
+                            top:2px;
+                            left:0%;
+                            transition:.4s;
+                        "
+                    ></div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Right: Reference + Chart -->
-        <div class="card right-card">
-          <div class="gold-line"></div>
-          <div class="top-bar" style="margin-bottom: 0">
-            <p class="card-title">Reference chart</p>
-          </div>
+        <!-- Right Panel -->
 
-          <table class="bmi-table">
-            <thead>
-              <tr><th>BMI</th><th>Category</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr><td>&lt; 18.5</td><td>Underweight</td>  <td><span class="dot dot-blue"></span></td></tr>
-              <tr><td>18.5 – 24.9</td><td>Normal weight</td><td><span class="dot dot-green"></span></td></tr>
-              <tr><td>25.0 – 29.9</td><td>Overweight</td>   <td><span class="dot dot-amber"></span></td></tr>
-              <tr><td>30.0 – 34.9</td><td>Obese (Class I)</td><td><span class="dot dot-red1"></span></td></tr>
-              <tr><td>35.0 – 39.9</td><td>Obese (Class II)</td><td><span class="dot dot-red2"></span></td></tr>
-              <tr><td>≥ 40.0</td><td>Obese (Class III)</td><td><span class="dot dot-red3"></span></td></tr>
-            </tbody>
-          </table>
+        <div class="recommendation-card">
 
-          <div class="chart-wrap">
-            <canvas id="bmiChart"></canvas>
-          </div>
-          <p class="chart-hint">BMI history — calculate multiple times to track changes.</p>
+            <div class="recommendation-box glass">
+
+                <div class="box-header">
+                    <span>📊</span>
+                    <h3>BMI Categories</h3>
+                </div>
+
+                <ul>
+                    <li>Underweight: Below 18.5</li>
+                    <li>Normal: 18.5 - 24.9</li>
+                    <li>Overweight: 25 - 29.9</li>
+                    <li>Obese: 30+</li>
+                </ul>
+
+            </div>
+
+            <div class="chart-section glass">
+
+                <div class="section-header">
+                    <h2>BMI History</h2>
+                </div>
+
+                <div class="chart-wrapper">
+                    <canvas id="bmiChart"></canvas>
+                </div>
+
+            </div>
+
         </div>
 
-      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <footer class="footer">
+        BMI Calculator • Built with HTML, CSS & JavaScript
+    </footer>
+
     <script src="script.js"></script>
-  </body>
+
+</body>
 </html>
