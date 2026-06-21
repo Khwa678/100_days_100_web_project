@@ -1809,22 +1809,22 @@ const handleLLDeleteAtIndex = async () => {
 
     const index = parseInt(indexRaw, 10);
 
-    if (index < 0 || index >= llState.nodes.length) {
-        const maxIndex = Math.max(0, llState.nodes.length - 1);
-        showLLFieldError(llDeleteIndexError, `Invalid index — valid range is 0 to ${maxIndex}`);
-        triggerLLErrorGlow();
-        setLLStatus(`Invalid index — valid range is 0 to ${maxIndex}`, 'failure');
-        resetLLInvalidInputs();
-        return;
-    }
-
     if (llState.nodes.length === 0) {
-        showLLFieldError(llDeleteIndexError, 'Cannot delete from empty list');
-        triggerLLErrorGlow();
-        setLLStatus('Cannot delete from an empty list', 'failure');
-        resetLLInvalidInputs();
-        return;
-    }
+            showLLFieldError(llDeleteIndexError, 'Cannot delete from empty list');
+            triggerLLErrorGlow();
+            setLLStatus('Cannot delete from an empty list', 'failure');
+            resetLLInvalidInputs();
+            return;
+        }
+
+        if (index < 0 || index >= llState.nodes.length) {
+            const maxIndex = Math.max(0, llState.nodes.length - 1);
+            showLLFieldError(llDeleteIndexError, `Invalid index — valid range is 0 to ${maxIndex}`);
+            triggerLLErrorGlow();
+            setLLStatus(`Invalid index — valid range is 0 to ${maxIndex}`, 'failure');
+            resetLLInvalidInputs();
+            return;
+        }
 
     llState.isRunning = true;
     setLLControlsDisabled(true);
